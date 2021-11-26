@@ -9,6 +9,7 @@
   "description": "Hi, Gina, the bot form of the 100 emoji.",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "devDependencies": {
     "eslint": "^8.3.0"
   },
