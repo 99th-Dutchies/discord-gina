@@ -1,4 +1,6 @@
 export default {
+	guildID: 'your-guild-id-here',
+	clientID: 'your-client-id-here',
 	token: 'your-token-goes-here',
 	channels: {
 		suggestions: 'suggestions-channel-id',
