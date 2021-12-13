@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@discordjs/builders": "^0.7.0",
+    "@discordjs/builders": "^0.8.2",
     "@discordjs/rest": "^0.1.0-canary.0",
     "any-to-any": "^4.1.0",
     "discord-api-types": "^0.24.0",
