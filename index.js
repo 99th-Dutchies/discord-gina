@@ -9,6 +9,7 @@ import config from './config.js';
 
 // Require the necessary express classes
 import express from 'express';
+import helmet from 'helmet';
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
@@ -83,7 +84,13 @@ const initDiscord = () => {
 					messages.each(message => {
 						message.react('🐛');
 					});
+				})
+				.catch(err => {
+					console.error(err);
 				});
+		})
+		.catch(err => {
+			console.error(err);
 		});
 };
 
@@ -105,6 +112,7 @@ expressRouter.get('/user/:tag', async (req, res) => {
 	});
 });
 
+expressServer.use(helmet());
 expressServer.use(expressRouter);
 
 expressServer.listen(3000, () => {
