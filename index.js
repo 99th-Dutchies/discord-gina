@@ -97,6 +97,9 @@ const initDiscord = () => {
 /*
  * EXPRESS SERVER INIT
  */
+expressRouter.get('/', async (req, res) => {
+	res.send('OK');
+});
 expressRouter.get('/user/:tag', async (req, res) => {
 	client.guilds.resolve(config.guildID).members.fetch({ query: req.params.tag, limit: 1 }).then((members) => {
 		const member = members.at(0);
