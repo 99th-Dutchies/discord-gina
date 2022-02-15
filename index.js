@@ -101,10 +101,16 @@ expressRouter.get('/user/:tag', async (req, res) => {
 	client.guilds.resolve(config.guildID).members.fetch({ query: req.params.tag, limit: 1 }).then((members) => {
 		const member = members.at(0);
 		if (member?.user) {
-			res.send(member.user.id);
+			res.json({
+				id: member.user.id,
+				tag: member.user.tag,
+				nick: member.nickname,
+			});
 		}
 		else {
-			res.status(400).send('User not found');
+			res.status(400).json({
+				reason: 'User not found',
+			});
 		}
 	}).catch((err) => {
 		console.error(err);
