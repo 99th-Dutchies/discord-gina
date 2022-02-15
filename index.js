@@ -101,7 +101,7 @@ expressRouter.get('/user/:tag', async (req, res) => {
 	client.guilds.resolve(config.guildID).members.fetch({ query: req.params.tag, limit: 1 }).then((members) => {
 		const member = members.at(0);
 		if (member?.user) {
-			res.send(member.user.id.escapeHtml());
+			res.send(member.user.id);
 		}
 		else {
 			res.status(400).send('User not found');
@@ -115,6 +115,6 @@ expressRouter.get('/user/:tag', async (req, res) => {
 expressServer.use(helmet());
 expressServer.use(expressRouter);
 
-expressServer.listen(3000, () => {
+expressServer.listen(config.express.port, () => {
 	console.log(`discord-gina express server listening on port ${config.express.port}`);
 });
