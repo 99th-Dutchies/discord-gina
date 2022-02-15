@@ -11,4 +11,7 @@ export default {
 		bugs: ['role-id-for-access-to-bug-channels', 'another-role-id-for-access-to-bug-channels'],
 	},
 	dateOffset: '2021-01-01 00:00:00',
+	express: {
+		port: 3000,
+	},
 };

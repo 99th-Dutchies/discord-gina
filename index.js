@@ -7,14 +7,22 @@ import * as commands from './commands/index.js';
 import * as helpers from './helpers/index.js';
 import config from './config.js';
 
+// Require the necessary express classes
+import express from 'express';
+
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+// Create a new express instance
+const expressServer = express();
+const expressRouter = express.Router();
 
-// When the client is ready, run this code (only once)
+/*
+ * DISCORD CLIENT INIT
+ */
 client.once('ready', () => {
 	console.log('Ready!');
 	console.log('Initializing...');
-	init();
+	initDiscord();
 	console.log('Initialized!');
 });
 client.on('debug', (info) => {
@@ -37,7 +45,7 @@ client.on('interactionCreate', interaction => {
 // Login to Discord with your client's token
 client.login(config.token);
 
-const init = () => {
+const initDiscord = () => {
 	// Register commands
 	const commandRegister = [
 		new SlashCommandBuilder()
@@ -78,3 +86,27 @@ const init = () => {
 				});
 		});
 };
+
+/*
+ * EXPRESS SERVER INIT
+ */
+expressRouter.get('/user/:tag', async (req, res) => {
+	client.guilds.resolve(config.guildID).members.fetch({ query: req.params.tag, limit: 1 }).then((members) => {
+		const member = members.at(0);
+		if (member?.user) {
+			res.send(member.user.id.escapeHtml());
+		}
+		else {
+			res.status(400).send('User not found');
+		}
+	}).catch((err) => {
+		console.error(err);
+		res.status(500).end();
+	});
+});
+
+expressServer.use(expressRouter);
+
+expressServer.listen(3000, () => {
+	console.log(`discord-gina express server listening on port ${config.express.port}`);
+});
