@@ -1,6 +1,7 @@
 'use strict';
 
 import bugHelper from './bugHelper.js';
+import ranksHelper from './ranksHelper.js';
 import suggestionHelper from './suggestionHelper.js';
 
-export { bugHelper, suggestionHelper };
+export { bugHelper, ranksHelper, suggestionHelper };
