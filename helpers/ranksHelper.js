@@ -20,15 +20,17 @@ export default async (message, rankChecks) => {
 				try {
 					if (res.statusCode === 200) {
 						const r = JSON.parse(d).roles;
-
-						// Remove and (re)assign the roles
-						message.member.roles
-							.remove(config.roles.ranks[i].ranks)
-							.then((updatedMember) => {
-								updatedMember.roles.add(r)
-									.catch((error) => console.log(error));
-							})
-							.catch((error) => console.log(error));
+						const ru = message.member.roles;
+						if (r.some(async rID => (await ru.resolve(rID)) === undefined)) {
+							// Remove and (re)assign the roles
+							message.member.roles
+								.remove(config.roles.ranks[i].ranks)
+								.then((updatedMember) => {
+									updatedMember.roles.add(r)
+										.catch((error) => console.log(error));
+								})
+								.catch((error) => console.log(error));
+						}
 					}
 				}
 				catch (e) {
