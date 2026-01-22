@@ -10,8 +10,6 @@ import config from './config.js';
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS] });
 
-let rankChecks = {};
-
 /*
  * DISCORD CLIENT INIT
  */
@@ -30,8 +28,6 @@ client.on('error', (error) => {
 
 client.on('messageCreate', (message) => {
 	if (message.channelId === config.channels.suggestions) helpers.suggestionHelper(message);
-
-	helpers.ranksHelper(message, rankChecks);
 });
 client.on('messageReactionAdd', (messageReaction, user) => {
 	if (messageReaction.message.channelId === config.channels.bugs && !user.bot) helpers.bugHelper(messageReaction, user);

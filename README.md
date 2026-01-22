@@ -1,6 +1,6 @@
 # discord-gina
 
-Gina is a Discord bot for community management, featuring bug reporting, suggestions, and role synchronization.
+Gina is a Discord bot for community management, featuring bug reporting and suggestions.
 
 ## Features
 
@@ -11,8 +11,6 @@ Gina is a Discord bot for community management, featuring bug reporting, suggest
 - **Bug Reporting System** - React to messages in the bugs channel to create private bug report channels with unique IDs
 
 - **Suggestion System** - Automatically adds voting reactions and creates discussion threads for suggestions
-
-- **Role Synchronization** - Sync user roles from an external API with configurable cooldowns
 
 ## Prerequisites
 
@@ -124,14 +122,6 @@ export default {
     },
     roles: {
         bugs: ['ROLE_ID_1', 'ROLE_ID_2'],  // Roles with bug channel access
-        ranks: [
-            {
-                link: 'https://api.example.com/discord/roles/',
-                cooldown: 300,  // Seconds between role checks
-                divider: 'DIVIDER_ROLE_ID',
-                ranks: ['RANK_ROLE_ID'],
-            },
-        ],
     },
     dateOffset: '2021-01-01 00:00:00',
 };
@@ -214,11 +204,6 @@ sudo journalctl -u discord-gina -f
 | `channels.bugs` | Channel ID where users submit bug reports |
 | `channels.bugs_category` | Category ID where bug report channels are created |
 | `roles.bugs` | Array of role IDs that can access bug channels |
-| `roles.ranks` | Array of rank sync configurations |
-| `roles.ranks[].link` | External API URL for role data |
-| `roles.ranks[].cooldown` | Seconds between role sync checks per user |
-| `roles.ranks[].divider` | Divider role ID for the rank group |
-| `roles.ranks[].ranks` | Array of role IDs to manage |
 | `dateOffset` | Base date for generating bug report channel IDs |
 
 ## Updating
