@@ -1,4 +1,4 @@
-import { Permissions, MessageEmbed } from 'discord.js';
+import { PermissionFlagsBits, EmbedBuilder, ChannelType } from 'discord.js';
 import { convert } from 'any-to-any';
 import config from '../config.js';
 
@@ -9,16 +9,18 @@ export default async (messageReaction, user) => {
 	const id = convert((new Date).getTime() - (new Date(config.dateOffset)).getTime(), 10, 36);
 
 	const bugRolesOverwrites = config.roles.bugs.map(r => {
-		return { type: 'role', id: r, allow: [Permissions.FLAGS.VIEW_CHANNEL] };
+		return { id: r, allow: [PermissionFlagsBits.ViewChannel] };
 	});
 
-	bugCategory.createChannel('Bug ' + id, {
+	bugCategory.children.create({
+		name: 'Bug ' + id,
+		type: ChannelType.GuildText,
 		permissionOverwrites: bugRolesOverwrites.concat([
-			{ type: 'member', id: user.id, allow: [Permissions.FLAGS.VIEW_CHANNEL] },
-			{ type: 'role', id: everyoneRole.id, deny: [Permissions.FLAGS.VIEW_CHANNEL] },
+			{ id: user.id, allow: [PermissionFlagsBits.ViewChannel] },
+			{ id: everyoneRole.id, deny: [PermissionFlagsBits.ViewChannel] },
 		]),
 	}).then(c => {
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor('#7A2F8F')
 			.setTitle('Thank you for reporting a bug!')
 			.addFields(

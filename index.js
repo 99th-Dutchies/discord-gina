@@ -1,14 +1,11 @@
 // Require the necessary discord.js classes
-import { Client, Intents } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
+import { Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes } from 'discord.js';
 import * as commands from './commands/index.js';
 import * as helpers from './helpers/index.js';
 import config from './config.js';
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers] });
 
 /*
  * DISCORD CLIENT INIT
@@ -33,7 +30,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 	if (messageReaction.message.channelId === config.channels.bugs && !user.bot) helpers.bugHelper(messageReaction, user);
 });
 client.on('interactionCreate', interaction => {
-	if (interaction.isCommand() && commands[interaction.commandName] !== null && typeof commands[interaction.commandName] === 'function') commands[interaction.commandName](interaction);
+	if (interaction.isChatInputCommand() && commands[interaction.commandName] !== null && typeof commands[interaction.commandName] === 'function') commands[interaction.commandName](interaction);
 });
 
 // Login to Discord with your client's token
@@ -63,7 +60,7 @@ const initDiscord = () => {
 					.setRequired(true)),
 	].map(command => command.toJSON());
 
-	const rest = new REST({ version: '9' }).setToken(config.token);
+	const rest = new REST({ version: '10' }).setToken(config.token);
 
 	rest.put(Routes.applicationCommands(config.clientID), { body: commandRegister })
 		.then(() => console.log('Successfully registered application commands.'))
