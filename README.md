@@ -14,8 +14,6 @@ Gina is a Discord bot for community management, featuring bug reporting, suggest
 
 - **Role Synchronization** - Sync user roles from an external API with configurable cooldowns
 
-- **REST API** - Health check endpoint and user lookup by Discord tag
-
 ## Prerequisites
 
 - Node.js 16.9.0 or higher
@@ -136,9 +134,6 @@ export default {
         ],
     },
     dateOffset: '2021-01-01 00:00:00',
-    express: {
-        port: 3000,
-    },
 };
 ```
 
@@ -225,26 +220,6 @@ sudo journalctl -u discord-gina -f
 | `roles.ranks[].divider` | Divider role ID for the rank group |
 | `roles.ranks[].ranks` | Array of role IDs to manage |
 | `dateOffset` | Base date for generating bug report channel IDs |
-| `express.port` | Port for the Express health check server |
-
-## API Endpoints
-
-The bot runs an Express server with the following endpoints:
-
-- `GET /` - Health check, returns "OK"
-- `GET /user/:tag` - Look up a guild member by Discord tag, returns user ID, tag, and nickname
-
-## Firewall Configuration
-
-If you're running the Express server, you may want to configure your firewall:
-
-```bash
-# Allow only local access (recommended)
-sudo ufw allow from 127.0.0.1 to any port 3000
-
-# Or allow from specific IP
-sudo ufw allow from YOUR_IP to any port 3000
-```
 
 ## Updating
 

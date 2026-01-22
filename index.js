@@ -7,15 +7,8 @@ import * as commands from './commands/index.js';
 import * as helpers from './helpers/index.js';
 import config from './config.js';
 
-// Require the necessary express classes
-import express from 'express';
-import helmet from 'helmet';
-
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS] });
-// Create a new express instance
-const expressServer = express();
-const expressRouter = express.Router();
 
 let rankChecks = {};
 
@@ -97,37 +90,3 @@ const initDiscord = () => {
 			console.error(err);
 		});
 };
-
-/*
- * EXPRESS SERVER INIT
- */
-expressRouter.get('/', async (req, res) => {
-	res.send('OK');
-});
-expressRouter.get('/user/:tag', async (req, res) => {
-	client.guilds.resolve(config.guildID).members.fetch({ query: req.params.tag, limit: 1 }).then((members) => {
-		const member = members.at(0);
-		if (member?.user) {
-			res.json({
-				id: member.user.id,
-				tag: member.user.tag,
-				nick: member.nickname,
-			});
-		}
-		else {
-			res.status(400).json({
-				reason: 'User not found',
-			});
-		}
-	}).catch((err) => {
-		console.error(err);
-		res.status(500).end();
-	});
-});
-
-expressServer.use(helmet());
-expressServer.use(expressRouter);
-
-expressServer.listen(config.express.port, () => {
-	console.log(`discord-gina express server listening on port ${config.express.port}`);
-});

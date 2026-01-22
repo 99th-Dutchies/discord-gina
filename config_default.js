@@ -19,7 +19,4 @@ export default {
 		],
 	},
 	dateOffset: '2021-01-01 00:00:00',
-	express: {
-		port: 3000,
-	},
 };
